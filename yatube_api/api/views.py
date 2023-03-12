@@ -6,11 +6,17 @@ from .serializers import PostSerializer, GroupSerializer
 from .serializers import CommentSerializer, UserSerializer, FollowSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework import mixins
 from rest_framework.pagination import LimitOffsetPagination
 from .permissions import IsOwnerOrReadOnly
 
 
-class FollowViewSet(viewsets.ModelViewSet):
+class CreateListViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
+                        viewsets.GenericViewSet):
+    pass
+
+
+class FollowViewSet(CreateListViewSet):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated, ]
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
